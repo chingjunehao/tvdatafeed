@@ -131,12 +131,14 @@ class TvDatafeed:
         username=None,
         password=None,
         chromedriver_path=None,
+        chromedriver=None,
         auto_login=True,
     ) -> None:
 
         self.ws_debug = False
         self.__automatic_login = auto_login
         self.chromedriver_path = chromedriver_path
+        self.chromedriver = chromedriver
         self.profile_dir = os.path.join(self.path, "chrome")
         self.token_date = datetime.date.today() - datetime.timedelta(days=1)
         self.__assert_dir()
@@ -264,10 +266,13 @@ class TvDatafeed:
                     "opening browser. Press enter once lgged in return back and press 'enter'. \n\nDO NOT CLOSE THE BROWSER"
                 )
                 time.sleep(5)
-
-            driver = webdriver.Chrome(
-                self.chromedriver_path, desired_capabilities=caps, options=options
-            )
+            
+            if self.chromedriver is not None:
+                driver = self.chromedriver
+            else:
+                driver = webdriver.Chrome(
+                    self.chromedriver_path, desired_capabilities=caps, options=options
+                )
 
             logger.debug("opening https://in.tradingview.com ")
             driver.set_window_size(1920, 1080)
