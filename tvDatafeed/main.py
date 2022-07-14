@@ -371,6 +371,10 @@ class TvDatafeed:
 
             for xi in x:
                 xi = re.split("\[|:|,|\]", xi)
+                try:
+                    float(xi[9])
+                except ValueError:
+                    xi[9]=0
                 ts = datetime.datetime.fromtimestamp(float(xi[4]))
                 data.append(
                     [
